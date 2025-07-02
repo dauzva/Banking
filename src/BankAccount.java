@@ -18,7 +18,7 @@ public class BankAccount {
     }
 
     public void printBalance() {
-        System.out.println("Current balance: "+balance);
+        System.out.printf("Current balance: %.2f €", balance);
     }
 
     public void transferTo(BankAccount destination, double amount) {
