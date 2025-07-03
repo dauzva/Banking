@@ -1,9 +1,19 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        BankAccount account = new BankAccount(); // starts with 0 balance
+        ArrayList<BankAccount> accounts = new ArrayList<>();
+        accounts.add(new BankAccount());
+        accounts.add(new BankAccount(200));
+        accounts.add(new BankAccount(300));
+        accounts.add(new BankAccount(100));
+
+        BankAccount account = accounts.get(0); // starts with 0 balance
 
         boolean running = true;
 
@@ -38,7 +48,27 @@ public class Main {
                     System.out.println("Invalid option.");
             }
         }
-
         scanner.close();
+
+        File dataFile = new File("data/accounts.csv");
+
+        try {
+            File parentDir = dataFile.getParentFile();
+            if (parentDir != null && !parentDir.exists()) {
+                parentDir.mkdirs();
+            }
+
+            FileWriter writer = new FileWriter(dataFile);
+
+            writer.write("AccountIndex,Balance\n");
+            for (int i = 0; i < accounts.size(); i++) {
+                writer.write(i + "," + String.format("%.2f", accounts.get(i).getBalance()) + "\n");
+            }
+
+            writer.close();
+            System.out.println("Account data saved to " + dataFile.getPath());
+        } catch (IOException e) {
+            System.out.println("Error writing file: " + e.getMessage());
+        }
     }
 }
