@@ -1,6 +1,10 @@
 public class BankAccount {
     private double balance;
 
+    public double getBalance() {
+        return balance;
+    }
+
     public BankAccount() {
         this.balance = 0;
     }
@@ -14,7 +18,12 @@ public class BankAccount {
     }
 
     public void withdraw(double amount) {
-        balance-=amount;
+        if (balance - amount >= 0) {
+            balance -= amount;
+        }
+        else {
+            System.out.println("Insufficient balance.");
+        }
     }
 
     public void printBalance() {
@@ -22,6 +31,7 @@ public class BankAccount {
     }
 
     public void transferTo(BankAccount destination, double amount) {
+        // TODO: make sure that the transfer is transactional, meaning both operations must succeed
         this.withdraw(amount);
         destination.deposit(amount);
     }
