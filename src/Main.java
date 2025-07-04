@@ -2,18 +2,18 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<BankAccount> accounts = new ArrayList<>();
-        accounts.add(new BankAccount());
-        accounts.add(new BankAccount(200));
-        accounts.add(new BankAccount(300));
-        accounts.add(new BankAccount(100));
+        Bank bank = new Bank();
+        bank.addBankAccount("111", new BankAccount());
+        bank.addBankAccount("222", new BankAccount(200));
+        bank.addBankAccount("333", new BankAccount(300));
 
-        BankAccount account = accounts.get(0); // starts with 0 balance
+        BankAccount account = bank.getAccount("111");
 
         boolean running = true;
 
@@ -61,10 +61,13 @@ public class Main {
             FileWriter writer = new FileWriter(dataFile);
 
             writer.write("AccountIndex,Balance\n");
-            for (int i = 0; i < accounts.size(); i++) {
-                writer.write(i + "," + String.format("%.2f", accounts.get(i).getBalance()) + "\n");
-            }
-
+            bank.getBankAccounts().forEach((id, bankAccount) -> {
+                try {
+                    writer.write( id+ "," + String.format("%.2f", bankAccount.getBalance()) + "\n");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             writer.close();
             System.out.println("Account data saved to " + dataFile.getPath());
         } catch (IOException e) {
