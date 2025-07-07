@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h2>Register</h2>
+    <form th:action="@{/register}" th:object="${user}" method="post">
+        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+        <div th:if="${#fields.hasErrors('username')}" class="error-message" th:errors="*{username}"></div>
+        <div th:if="${#fields.hasErrors('email')}" class="error-message" th:errors="*{email}"></div>
+        <div th:if="${#fields.hasErrors('password')}" class="error-message" th:errors="*{password}"></div>
+
+
+        <label for="regUsername">Username:</label>
+        <input type="text" id="regUsername" th:field="*{username}" required><br>
+
+        <label for="regEmail">Email:</label>
+        <input type="email" id="regEmail" th:field="*{email}" required><br>
+
+        <label for="regPassword">Password:</label>
+        <input type="password" id="regPassword" th:field="*{password}" required><br>
+
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a th:href="@{/login}">Login here</a></p>
+</div>
+</body>
+</html>

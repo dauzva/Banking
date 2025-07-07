@@ -8,9 +8,9 @@ services:
     environment:
       POSTGRES_DB: bankingdb
       POSTGRES_USER: bankuser
-      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_PASSWORD: bankpassword123
     ports:
-      - "5432:5432"
+      - "5332:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+  <h2>Welcome, <span th:text="${user.username}">User</span>!</h2>
+
+  <div th:if="${param.success}" class="success-message">
+    <span th:if="${param.success == 'deposit'}">Deposit successful!</span>
+    <span th:if="${param.success == 'withdraw'}">Withdrawal successful!</span>
+  </div>
+  <div th:if="${param.error}" class="error-message">
+    <span th:if="${param.error == 'insufficientFunds'}">Insufficient funds for withdrawal.</span>
+  </div>
+
+  <h3>Your Bank Account</h3>
+  <p>Account Number: <span th:text="${bankAccount.accountNumber}"></span></p>
+  <p>Current Balance: $<span th:text="${#numbers.formatDecimal(bankAccount.balance, 0, 'COMMA', 2, 'POINT')}">0.00</span></p>
+
+  <h4>Deposit Funds</h4>
+  <form th:action="@{/deposit}" method="post">
+    <label for="depositAmount">Amount:</label>
+    <input type="number" id="depositAmount" name="amount" step="0.01" min="0.01" required>
+    <button type="submit">Deposit</button>
+  </form>
+
+  <h4>Withdraw Funds</h4>
+  <form th:action="@{/withdraw}" method="post">
+    <label for="withdrawAmount">Amount:</label>
+    <input type="number" id="withdrawAmount" name="amount" step="0.01" min="0.01" required>
+    <button type="submit">Withdraw</button>
+  </form>
+
+  <br>
+  <form th:action="@{/logout}" method="post">
+    <button type="submit" class="logout-button">Logout</button>
+  </form>
+</div>
+</body>
+</html>
