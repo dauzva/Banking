@@ -1,5 +1,6 @@
 package com.dauzva.banking.model;
 
+import com.dauzva.banking.exception.InsufficientFundsException;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,16 +34,20 @@ public class BankAccount {
     }
 
     public void deposit(double amount) {
-        if (amount > 0) {
-            this.balance += amount;
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be positive");
         }
+        this.balance += amount;
     }
 
-    public boolean withdraw(double amount) {
-        if (amount > 0 && this.balance >= amount) {
-            this.balance -= amount;
-            return true;
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be positive");
         }
-        return false;
+        if (this.balance >= amount) {
+            this.balance -= amount;
+        } else {
+            throw new InsufficientFundsException();
+        }
     }
 }

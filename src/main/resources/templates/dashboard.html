@@ -10,12 +10,13 @@
 <div class="container">
   <h2>Welcome, <span th:text="${user.username}">User</span>!</h2>
 
-  <div th:if="${param.success}" class="success-message">
-    <span th:if="${param.success == 'deposit'}">Deposit successful!</span>
-    <span th:if="${param.success == 'withdraw'}">Withdrawal successful!</span>
+  <div th:if="${success}" class="success-message">
+    <span th:if="${success == 'deposit'}">Deposit successful!</span>
+    <span th:if="${success == 'withdraw'}">Withdrawal successful!</span>
   </div>
-  <div th:if="${param.error}" class="error-message">
-    <span th:if="${param.error == 'insufficientFunds'}">Insufficient funds for withdrawal.</span>
+  <div th:if="${error}" class="error-message">
+    <span th:if="${error == 'insufficientFunds'}">Insufficient funds for withdrawal.</span>
+    <span th:if="${error == 'invalidAmount'}">Invalid amount specified.</span>
   </div>
 
   <h3>Your Bank Account</h3>
