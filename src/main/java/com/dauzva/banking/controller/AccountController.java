@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Controller
 public class AccountController {
 
     private final UserService userService;
+
+    private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
     public AccountController(UserService userService) {
         this.userService = userService;
@@ -48,8 +53,10 @@ public class AccountController {
             account.deposit(amount);
             userService.getBankAccountRepository().save(account);
             redirectAttributes.addFlashAttribute("success", "deposit");
+            logger.info("Deposit successful for user: {} amount: {}", user.getUsername(), amount);
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "invalidAmount");
+            logger.error("Invalid deposit amount: {} for user: {}", amount, user.getUsername());
         }
         return "redirect:/dashboard";
 
@@ -66,10 +73,13 @@ public class AccountController {
             account.withdraw(amount);
             userService.getBankAccountRepository().save(account);
             redirectAttributes.addFlashAttribute("success", "withdraw");
+            logger.info("Withdrawal successful for user: {} amount: {}", user.getUsername(), amount);
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "invalidAmount");
+            logger.error("Invalid withdrawal amount: {} for user: {}", amount, user.getUsername());
         } catch (InsufficientFundsException e) {
             redirectAttributes.addFlashAttribute("error", "insufficientFunds");
+            logger.error("Insufficient funds for withdrawal: {} for user: {}", amount, user.getUsername());
         }
         return "redirect:/dashboard";
     }

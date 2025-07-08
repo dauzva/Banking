@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</Property>
+        <Property name="APP_LOG_ROOT">logs</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+
+        <File name="TransactionFileAppender" fileName="${APP_LOG_ROOT}/transactions.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </File>
+
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.dauzva.banking.controller" level="INFO" additivity="false">
+            <AppenderRef ref="TransactionFileAppender"/>
+        </Logger>
+
+        <Root level="INFO">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>
